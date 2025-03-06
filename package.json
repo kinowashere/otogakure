@@ -1,0 +1,17 @@
+{
+  "name": "otogakure",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "format:check": "prettier . --check",
+    "format:write": "prettier . --write"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "prettier": "3.5.3"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  }
+}
