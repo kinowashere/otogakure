@@ -5,7 +5,9 @@
   "private": true,
   "scripts": {
     "format:check": "prettier . --check",
-    "format:write": "prettier . --write"
+    "format:write": "prettier . --write",
+    "import_local_tracks": "bun /src/scripts/importLocalTracks.ts",
+    "setup": "bun /src/scripts/setup.ts"
   },
   "devDependencies": {
     "@types/bun": "latest",
@@ -13,5 +15,8 @@
   },
   "peerDependencies": {
     "typescript": "^5"
+  },
+  "dependencies": {
+    "mongodb": "6.14.2"
   }
 }

@@ -4,6 +4,18 @@ music stats
 
 gangster-driven development
 
+## setup
+
+- setup bun with `asdf`.
+- have a mongo instance running.
+- copy `.env.example` to `.env` and setup your own env vars.
+- copy your spotify tracks (_Streaming History Audio_) into `./spotify_data/`
+
+## scripts
+
+- `bun setup` -> to create indexes and verify your setup
+- `bun import_local_tracks` -> to import the json files into mongo
+
 ```
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣀⣀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣤⣶⣿⣿⣿⣿⣿⣿⣿⣿⣶⣦⣄⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
