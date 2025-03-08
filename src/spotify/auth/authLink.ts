@@ -1,8 +1,10 @@
-import { safeEnv } from "../utils/safeEnv";
-import { SPOTIFY_CLIENT_ID } from "./auth/keys";
+import { safeEnv } from "../../utils/safeEnv";
+import { SPOTIFY_CLIENT_ID } from "./keys";
 
-const AUTH_CALLBACK_PATH = "/auth_callback";
-const AUTH_CALLBACK_SERVER_PORT = safeEnv("AUTH_CALLBACK_SERVER_PORT");
+export const AUTH_CALLBACK_PATH = "/auth_callback";
+export const AUTH_CALLBACK_SERVER_PORT = Number(
+  safeEnv("AUTH_CALLBACK_SERVER_PORT"),
+);
 const RESPONSE_TYPE = "code";
 
 type GetAuthLinkProps = {

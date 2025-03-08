@@ -15,6 +15,7 @@ gangster-driven development
 
 - `bun setup` -> to create indexes and verify your setup
 - `bun import_local_tracks` -> to import the json files into mongo
+- `bun import_spotify_data` -> (wip) fetch all artist, album, and track data from spotify to mongo
 
 ```
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣀⣀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
