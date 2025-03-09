@@ -17,6 +17,18 @@ gangster-driven development
 - `bun import_local_tracks` -> to import the json files into mongo
 - `bun import_spotify_data` -> fetch all artist, album, and track data from spotify to mongo
 
+## todo
+
+### core features
+
+- [x] anime girl
+- [x] 0 tests
+- [x] javascript
+
+## extra features
+
+- [ ] `import_spotify_data` option to force refetch of all spotify data even if it exists
+
 ```
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣀⣀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣤⣶⣿⣿⣿⣿⣿⣿⣿⣿⣶⣦⣄⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
