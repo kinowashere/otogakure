@@ -41,3 +41,14 @@ export type SpotifyTrack = {
   name: string;
   uri: string;
 };
+
+export type SpotifyAlbum = {
+  album_type: SpotifyAlbumType;
+  total_tracks: number;
+  href: string;
+  name: string;
+  release_date: string;
+  release_date_precision: SpotifyReleaseDatePrecision;
+  uri: string;
+  artists: { uri: string }[];
+};

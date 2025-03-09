@@ -1,11 +1,14 @@
 import { localTracksRepo } from "../repo/localTracks";
+import { spotifyAlbumsRepo } from "../repo/spotifyAlbums";
 import { spotifyTracksRepo } from "../repo/spotifyTracks";
 import { getAuthToken } from "../spotify/auth/authTokenUpdater";
 import { uriToId } from "../spotify/utils";
+import { getSeveralAlbums } from "../spotify/web/api/albums/getSeveralAlbums";
 import { getSeveralTracks } from "../spotify/web/api/tracks/getSeveralTracks";
 import { chunk } from "lodash";
 
-const MAX_CHUNK_SIZE = 50;
+const MAX_TRACKS_CHUNK_SIZE = 50;
+const MAX_ALBUMS_CHUNK_SIZE = 20;
 const DEFAULT_TIMEOUT = 350;
 
 const scheduleMaybeStart = () => {
@@ -49,7 +52,7 @@ const importTracks = async () => {
     return;
   }
   console.log(`fetching ${allUniqueTrackIds.length} tracks`);
-  const chunkedTrackIds = chunk(allUniqueTrackIds, MAX_CHUNK_SIZE);
+  const chunkedTrackIds = chunk(allUniqueTrackIds, MAX_TRACKS_CHUNK_SIZE);
   for (let i = 0; i < chunkedTrackIds.length; i += 1) {
     const trackIds = chunkedTrackIds[i];
     const res = await getSeveralTracks(trackIds);
@@ -69,8 +72,60 @@ const importTracks = async () => {
   console.log("finished importing tracks");
 };
 
+// for each track, we get their album
+const getAllUniqueAlbumIdsFromTracks = async () => {
+  const allSpotifyAlbumIdsFromTracks = await spotifyTracksRepo()
+    .find({}, { projection: { "album.uri": 1 } })
+    .toArray();
+  const allSpotifyAlbums = await spotifyAlbumsRepo()
+    .find({}, { projection: { uri: 1 } })
+    .toArray();
+
+  const uniqueAlbumIds = allSpotifyAlbumIdsFromTracks.reduce((acc, track) => {
+    return acc.set(uriToId(track.album.uri), true);
+  }, new Map<string, boolean>());
+
+  console.log(`unique album ids: ${uniqueAlbumIds.size}`);
+
+  allSpotifyAlbums.forEach(({ uri }) => {
+    const id = uriToId(uri);
+    uniqueAlbumIds.delete(id);
+  });
+
+  return [...uniqueAlbumIds.entries().map(([id]) => id)];
+};
+
+const importAlbums = async () => {
+  console.log("starting to import albums");
+  const allUniqueAlbumIds = await getAllUniqueAlbumIdsFromTracks();
+  if (!allUniqueAlbumIds.length) {
+    console.log("no new albums to import. skipping");
+    return;
+  }
+  console.log(`fetching ${allUniqueAlbumIds.length} albums`);
+  const chunkedAlbumIds = chunk(allUniqueAlbumIds, MAX_ALBUMS_CHUNK_SIZE);
+  for (let i = 0; i < chunkedAlbumIds.length; i += 1) {
+    const albumIds = chunkedAlbumIds[i];
+    const res = await getSeveralAlbums(albumIds);
+    switch (res.success) {
+      case true:
+        const {
+          data: { albums },
+        } = res;
+        await spotifyAlbumsRepo().insertMany(albums);
+        await Bun.sleep(DEFAULT_TIMEOUT);
+        break;
+      default:
+        console.error("error importing albums", { error: res.error });
+        break;
+    }
+  }
+  console.log("finished importing albums");
+};
+
 const importSpotifyData = async () => {
   await importTracks();
+  await importAlbums();
   process.exit(0);
 };
 
