@@ -1,14 +1,5 @@
 import { webClient } from "../../webClient";
-import type { SpotifyImage, WebApiResponse } from "../api";
-
-export type CurrentUserProfile = {
-  country: string | null;
-  display_name: string | null;
-  email: string | null;
-  id: string;
-  images: SpotifyImage[];
-  uri: string;
-};
+import type { CurrentUserProfile, WebApiResponse } from "../api";
 
 export const getCurrentUserProfile = async (): Promise<
   WebApiResponse<CurrentUserProfile>
