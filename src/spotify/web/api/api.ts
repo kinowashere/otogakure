@@ -51,4 +51,13 @@ export type SpotifyAlbum = {
   release_date_precision: SpotifyReleaseDatePrecision;
   uri: string;
   artists: { uri: string }[];
+  images: SpotifyImage[];
+};
+
+export type SpotifyArtist = {
+  genres: [];
+  href: string;
+  images: SpotifyImage[];
+  name: string;
+  uri: string;
 };

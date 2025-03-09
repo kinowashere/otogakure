@@ -1,14 +1,17 @@
 import { localTracksRepo } from "../repo/localTracks";
 import { spotifyAlbumsRepo } from "../repo/spotifyAlbums";
+import { spotifyArtistsRepo } from "../repo/spotifyArtists";
 import { spotifyTracksRepo } from "../repo/spotifyTracks";
 import { getAuthToken } from "../spotify/auth/authTokenUpdater";
 import { uriToId } from "../spotify/utils";
 import { getSeveralAlbums } from "../spotify/web/api/albums/getSeveralAlbums";
+import { getSeveralArtists } from "../spotify/web/api/artists/getSeveralArtists";
 import { getSeveralTracks } from "../spotify/web/api/tracks/getSeveralTracks";
 import { chunk } from "lodash";
 
 const MAX_TRACKS_CHUNK_SIZE = 50;
 const MAX_ALBUMS_CHUNK_SIZE = 20;
+const MAX_ARTISTS_CHUNK_SIZE = 50;
 const DEFAULT_TIMEOUT = 350;
 
 const scheduleMaybeStart = () => {
@@ -123,9 +126,71 @@ const importAlbums = async () => {
   console.log("finished importing albums");
 };
 
+const getAllUniqueArtistIds = async () => {
+  const allArtistsFromTracks = await spotifyTracksRepo()
+    .find({}, { projection: { "artists.uri": 1 } })
+    .toArray();
+  const allArtistsFromAlbums = await spotifyAlbumsRepo()
+    .find({}, { projection: { "artists.uri": 1 } })
+    .toArray();
+  const uniqueArtistIds = new Map<string, boolean>();
+  allArtistsFromTracks.forEach(({ artists }) => {
+    artists.forEach(({ uri }) => {
+      uniqueArtistIds.set(uriToId(uri), true);
+    });
+  });
+  allArtistsFromAlbums.forEach(({ artists }) => {
+    artists.forEach(({ uri }) => {
+      uniqueArtistIds.set(uriToId(uri), true);
+    });
+  });
+  console.log(
+    `artists from tracks / albums with unique ids: ${uniqueArtistIds.size}`,
+  );
+  const allSpotifyArtists = await spotifyArtistsRepo()
+    .find({}, { projection: { uri: 1 } })
+    .toArray();
+
+  allSpotifyArtists.forEach(({ uri }) => {
+    const id = uriToId(uri);
+    uniqueArtistIds.delete(id);
+  });
+  return [...uniqueArtistIds.entries().map(([id]) => id)];
+};
+
+const importArtists = async () => {
+  console.log("starting to import artists");
+  const uniqueArtistIds = await getAllUniqueArtistIds();
+  if (!uniqueArtistIds.length) {
+    console.log("no new artists to import. skipping");
+    return;
+  }
+  console.log(`fetching ${uniqueArtistIds.length} artists`);
+  const chunkedArtistIds = chunk(uniqueArtistIds, MAX_ARTISTS_CHUNK_SIZE);
+  for (let i = 0; i < chunkedArtistIds.length; i += 1) {
+    const artistIds = chunkedArtistIds[i];
+    const res = await getSeveralArtists(artistIds);
+    switch (res.success) {
+      case true:
+        const {
+          data: { artists },
+        } = res;
+        await spotifyArtistsRepo().insertMany(artists);
+        await Bun.sleep(DEFAULT_TIMEOUT);
+        break;
+      default:
+        console.error("error importing artists", { error: res.error });
+        break;
+    }
+  }
+  console.log("finished import artists");
+};
+
 const importSpotifyData = async () => {
   await importTracks();
   await importAlbums();
+  await importArtists();
+  console.log("finished importing all Spotify data");
   process.exit(0);
 };
 
