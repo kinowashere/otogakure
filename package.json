@@ -8,6 +8,7 @@
     "format:write": "prettier . --write",
     "import_local_tracks": "bun /src/scripts/importLocalTracks.ts",
     "import_spotify_data": "bun /src/scripts/importSpotifyData.ts",
+    "process_listened_tracks": "bun /src/scripts/processListenedTracks.ts",
     "setup": "bun /src/scripts/setup.ts"
   },
   "devDependencies": {

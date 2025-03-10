@@ -1,4 +1,5 @@
 import { initDb } from "../repo/db";
+import { listenedTracksRepo } from "../repo/listenedTracks";
 import { localTracksRepo } from "../repo/localTracks";
 import { spotifyAlbumsRepo } from "../repo/spotifyAlbums";
 import { spotifyArtistsRepo } from "../repo/spotifyArtists";
@@ -13,6 +14,10 @@ const main = async () => {
   await spotifyAlbumsRepo().createIndex("uri", { unique: true });
   await spotifyAlbumsRepo().createIndex("artists.uri");
   await spotifyArtistsRepo().createIndex("uri", { unique: true });
+
+  // the big chunky bunch of indexes here
+  // let's add them as needed
+  await listenedTracksRepo().createIndex("track_uri");
   console.log("Db setup complete");
   process.exit(0);
 };
