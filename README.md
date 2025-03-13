@@ -18,6 +18,7 @@ gangster-driven development
 - `bun import_spotify_data` -> fetch all artist, album, and track data from spotify to mongo
 - `bun process_listened_tracks` -> denormalize spotify data into listened tracks
 - `bun dev` -> to run a dev version of the frontend
+- `bun server:watch` -> run a dev version of the frontend
 
 ## usage
 
@@ -27,6 +28,7 @@ gangster-driven development
 - run `bun import_spotify_data`
   - in case of errors regarding 500 status code, run the script again. spotify be like that sometimes.
   - in case of getting rate limits, try again tomorrow or smth.
+- run `bun process_listened_tracks`
 
 ## todo
 
