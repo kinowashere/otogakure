@@ -1,2 +1,3 @@
 # Binary
 bun.lock
+src/*.gen.ts
