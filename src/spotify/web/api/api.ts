@@ -32,9 +32,10 @@ export type SpotifyAlbumType = "album" | "single" | "compilation";
 export type SpotifyTrack = {
   album: {
     uri: string;
+    name: string;
     images: SpotifyImage[];
   };
-  artists: { uri: string }[];
+  artists: { uri: string; name: string[] }[];
   duration_ms: number;
   explicit: boolean;
   href: string;
@@ -50,7 +51,7 @@ export type SpotifyAlbum = {
   release_date: string;
   release_date_precision: SpotifyReleaseDatePrecision;
   uri: string;
-  artists: { uri: string }[];
+  artists: { uri: string; name: string }[];
   images: SpotifyImage[];
 };
 

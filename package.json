@@ -10,6 +10,7 @@
     "import_local_tracks": "bun /src/scripts/importLocalTracks.ts",
     "import_spotify_data": "bun /src/scripts/importSpotifyData.ts",
     "process_listened_tracks": "bun /src/scripts/processListenedTracks.ts",
+    "process_charts": "bun /src/scripts/processCharts.ts",
     "server:watch": "bun --watch /src/scripts/server.ts",
     "setup": "bun /src/scripts/setup.ts"
   },

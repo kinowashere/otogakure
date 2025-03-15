@@ -19,6 +19,9 @@ gangster-driven development
 - `bun process_listened_tracks` -> denormalize spotify data into listened tracks
 - `bun dev` -> to run a dev version of the frontend
 - `bun server:watch` -> run a dev version of the frontend
+- `bun process_charts` -> process your listening history to charts.
+  - by default, the script only processes charts which have not been stored / processed
+  - `--all` -> use when you want to re-process all your charts
 
 ## usage
 
@@ -42,6 +45,10 @@ gangster-driven development
 
 - [ ] `import_spotify_data` option to force refetch of all spotify data even if it exists
 - [ ] `import_local_tracks` dump in a file or smth the files which can't be imported
+
+## important notes
+
+- use `uri` fields for anything. the `id` field is a lie. don't trust me? check this `spotify:track:2E7W1X4maFFcjHrVrFA7Vs` and this `spotify:track:5zsln7hQof1oQ16eRwiB7s`. check it's id. bomboclaaaaaat
 
 ```
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣀⣀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
