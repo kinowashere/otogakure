@@ -86,8 +86,18 @@ const fetchAlbum = (uri: string) => {
   return cached;
 };
 
+const isDataValid = (track: WithId<SpotifyTrack>) => {
+  if (!track.duration_ms) {
+    return false;
+  }
+  return true;
+};
+
 const processLocalTrack = (localTrack: LocalTrack) => {
   const track = fetchTrack(localTrack.spotify_track_uri);
+  if (!isDataValid(track)) {
+    return false;
+  }
   const artists = track.artists.map(({ uri }) => fetchArtist(uri));
   const album = fetchAlbum(track.album.uri);
   const offlineTimestamp = localTrack.offline_timestamp
@@ -154,7 +164,10 @@ const main = async () => {
     .toArray();
   console.log("processing tracks...");
 
-  const listenedTracks = allLocalTracks.map(processLocalTrack);
+  const listenedTracks = allLocalTracks
+    .map(processLocalTrack)
+    .filter((el) => !!el);
+
   await listenedTracksRepo().insertMany(listenedTracks);
 
   console.log(`done processing ${listenedTracks.length} listened tracks`);
