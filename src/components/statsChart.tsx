@@ -52,6 +52,7 @@ export const TopListenedChart = ({ year }: TopListenedChartProps) => {
           <button
             className={`cursor-pointer py-1 px-2 rounded hover:opacity-85 transition-all duration-150 ${tab == selectedTab ? "text-zinc-950 bg-amber-50" : "bg-blue-900"}`}
             onClick={() => selectTab(tab)}
+            key={tab}
           >
             {tab}
           </button>
