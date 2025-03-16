@@ -8,7 +8,7 @@ import { StatsChartType } from "../statsChart";
 // TODO: make it configurable
 const TOP_ELEMENTS = 10;
 
-type Year = number;
+type Year = number | string;
 
 export type TopListenedChart = Record<
   TopListenedType,
