@@ -18,7 +18,7 @@ gangster-driven development
 - `bun import_spotify_data` -> fetch all artist, album, and track data from spotify to mongo
 - `bun process_listened_tracks` -> denormalize spotify data into listened tracks
 - `bun dev` -> to run a dev version of the frontend
-- `bun server:watch` -> run a dev version of the frontend
+- `bun server:watch` -> run a dev version of the backend
 - `bun process_charts` -> process your listening history to charts.
   - by default, the script only processes charts which have not been stored / processed
   - `--all` -> use when you want to re-process all your charts
