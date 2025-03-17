@@ -1,3 +1,4 @@
+import type { GeneralOverviewChart } from "./chartTypes/generalOverview";
 import type { ListenedPerDecadeChart } from "./chartTypes/listenedPerDecade";
 import type { TopListenedChart } from "./chartTypes/topListened";
 import type { YearsListenedChart } from "./chartTypes/yearsListened";
@@ -11,6 +12,7 @@ export enum StatsChartType {
   TOP_LISTENED = "top_listened",
   YEARS_LISTENED = "years_listened",
   LISTENED_PER_DECADE = "listened_per_decade",
+  GENERAL_OVERVIEW = "general_overview",
 }
 
 export type TopListenedStatsChart = GenericStatsChart<
@@ -28,7 +30,13 @@ export type ListenedPerDecadeStatsChart = GenericStatsChart<
   StatsChartType.LISTENED_PER_DECADE
 >;
 
+export type GeneralOverviewStatsChart = GenericStatsChart<
+  GeneralOverviewChart,
+  StatsChartType.GENERAL_OVERVIEW
+>;
+
 export type StatsChart =
   | TopListenedStatsChart
   | YearsListenedStatsChart
-  | ListenedPerDecadeStatsChart;
+  | ListenedPerDecadeStatsChart
+  | GeneralOverviewStatsChart;

@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { request } from "./request";
 import {
+  type GeneralOverviewStatsChart,
   type ListenedPerDecadeStatsChart,
   type TopListenedStatsChart,
   type YearsListenedStatsChart,
@@ -10,6 +11,7 @@ enum QueryKeys {
   GetTopListened = "get_top_listened",
   YearsListened = "years_listened",
   ListenedPerDecade = "listened_per_decade",
+  GeneralOverview = "general_overview",
 }
 
 export const useTopListened = () =>
@@ -32,5 +34,13 @@ export const useListenedPerDecade = () =>
     queryFn: () =>
       request<ListenedPerDecadeStatsChart>("/chart/listened_per_decade", "GET"),
     queryKey: [QueryKeys.ListenedPerDecade],
+    retry: false,
+  });
+
+export const useGeneralOverview = () =>
+  useQuery({
+    queryFn: () =>
+      request<GeneralOverviewStatsChart>("/chart/general_overview", "GET"),
+    queryKey: [QueryKeys.GeneralOverview],
     retry: false,
   });

@@ -1,11 +1,17 @@
 import { Bar } from "react-chartjs-2";
-import { useListenedPerDecade, useTopListened } from "../statsChart/client/api";
+import {
+  useGeneralOverview,
+  useListenedPerDecade,
+  useTopListened,
+} from "../statsChart/client/api";
 import { useState } from "react";
 import type {
+  GeneralOverviewStatsChart,
   ListenedPerDecadeStatsChart,
   TopListenedStatsChart,
 } from "../statsChart/statsChart";
 import { msToTime } from "../utils/msToTime";
+import type { GeneralOverviewChart } from "../statsChart/chartTypes/generalOverview";
 
 type TopListenedTab = "artist" | "album" | "track" | "genre";
 
@@ -154,6 +160,68 @@ export const ListenedPerDecadeChart = ({
           ],
           labels: chartData.labels,
         }}
+      />
+    </section>
+  );
+};
+
+const processGeneralOverview = (
+  year: string,
+  data?: GeneralOverviewStatsChart,
+) => {
+  if (!data) {
+    return null;
+  }
+  return data.data[year];
+};
+
+type GeneralOverviewBlockProps = {
+  title: string;
+  text: string;
+};
+
+const GeneralOverviewBlock = ({ title, text }: GeneralOverviewBlockProps) => {
+  return (
+    <div className="flex flex-col space-y-1 rounded-xl border-2 border-zinc-700 bg-zinc-800 px-2 py-1">
+      <p className="text-xs font-black font-mono">{title}</p>
+      <p className="font-light font-mono text-sm">{text}</p>
+    </div>
+  );
+};
+
+type GeneralOverviewProps = {
+  year: string;
+};
+
+export const GeneralOverview = ({ year }: GeneralOverviewProps) => {
+  const { data, status } = useGeneralOverview();
+  const chartData = processGeneralOverview(year, data);
+  if (status == "loading" || !chartData) {
+    return <div>loading...</div>;
+  }
+  const msPlayedText = `${msToTime(chartData.ms_played)}`;
+  return (
+    <section className="grid grid-cols-2 grid-rows-3 md:grid-cols-3 md:grid-rows-2 gap-x-2 gap-y-2">
+      <GeneralOverviewBlock title="time played" text={msPlayedText} />
+      <GeneralOverviewBlock
+        title="total tracks"
+        text={chartData.tracks_played.toLocaleString()}
+      />
+      <GeneralOverviewBlock
+        title="unique albums"
+        text={chartData.unique_albums.toLocaleString()}
+      />
+      <GeneralOverviewBlock
+        title="unique artists"
+        text={chartData.unique_artists.toLocaleString()}
+      />
+      <GeneralOverviewBlock
+        title="unique tracks"
+        text={chartData.unique_tracks.toLocaleString()}
+      />
+      <GeneralOverviewBlock
+        title="unique genres"
+        text={chartData.unique_genres.toLocaleString()}
       />
     </section>
   );

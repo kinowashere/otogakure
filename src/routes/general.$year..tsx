@@ -5,6 +5,7 @@ import {
 } from "@tanstack/react-router";
 import { H1 } from "../components/text";
 import {
+  GeneralOverview,
   ListenedPerDecadeChart,
   TopListenedChart,
 } from "../components/statsChart";
@@ -20,6 +21,7 @@ const Index = () => {
     <main className="flex flex-col space-y-3">
       <H1>general</H1>
       <YearSelector onSelect={onSelect} value={year} />
+      <GeneralOverview year={year} />
       <TopListenedChart year={year} />
       <ListenedPerDecadeChart year={year} />
     </main>
