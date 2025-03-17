@@ -4,7 +4,10 @@ import {
   useParams,
 } from "@tanstack/react-router";
 import { H1 } from "../components/text";
-import { TopListenedChart } from "../components/statsChart";
+import {
+  ListenedPerDecadeChart,
+  TopListenedChart,
+} from "../components/statsChart";
 import { YearSelector } from "../components/yearSelector";
 
 const Index = () => {
@@ -18,6 +21,7 @@ const Index = () => {
       <H1>general</H1>
       <YearSelector onSelect={onSelect} value={year} />
       <TopListenedChart year={year} />
+      <ListenedPerDecadeChart year={year} />
     </main>
   );
 };

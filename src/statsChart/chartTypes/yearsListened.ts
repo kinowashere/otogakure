@@ -2,8 +2,10 @@ import { statsChartsRepo } from "../../repo/charts";
 import { listenedTracksRepo } from "../../repo/listenedTracks";
 import { StatsChartType } from "../statsChart";
 
+export type Year = number | string;
+
 export type YearsListenedChart = {
-  years: (number | string)[];
+  years: Year[];
 };
 
 export const processYearsListened = async () => {

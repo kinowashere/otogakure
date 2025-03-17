@@ -1,7 +1,10 @@
 import { Bar } from "react-chartjs-2";
-import { useTopListened } from "../statsChart/client/api";
+import { useListenedPerDecade, useTopListened } from "../statsChart/client/api";
 import { useState } from "react";
-import type { TopListenedStatsChart } from "../statsChart/statsChart";
+import type {
+  ListenedPerDecadeStatsChart,
+  TopListenedStatsChart,
+} from "../statsChart/statsChart";
 import { msToTime } from "../utils/msToTime";
 
 type TopListenedTab = "artist" | "album" | "track" | "genre";
@@ -79,6 +82,74 @@ export const TopListenedChart = ({ year }: TopListenedChartProps) => {
             {
               data: chartData.data,
               label: `${selectedTab} listened in ms`,
+            },
+          ],
+          labels: chartData.labels,
+        }}
+      />
+    </section>
+  );
+};
+const processListenedPerDecade = (
+  year: string,
+  data?: ListenedPerDecadeStatsChart,
+) => {
+  switch (data) {
+    case undefined:
+      return null;
+    default:
+      const labels: string[] = [];
+      const dataset: number[] = [];
+      const yearData = data.data[year];
+      if (!yearData) {
+        return { labels, dataset };
+      }
+      Object.keys(yearData).forEach((decade) => {
+        labels.push(decade);
+        dataset.push(yearData[Number(decade)]);
+      });
+      return { labels, dataset };
+  }
+};
+
+type ListenedPerDecadeChartProps = {
+  year: string;
+};
+
+export const ListenedPerDecadeChart = ({
+  year,
+}: ListenedPerDecadeChartProps) => {
+  const { status, data } = useListenedPerDecade();
+  const chartData = processListenedPerDecade(year, data);
+
+  if (status == "loading" || !chartData) {
+    return <div>loading...</div>;
+  }
+
+  return (
+    <section className="flex flex-col space-y-1">
+      <h2>time listened per decade</h2>
+      <Bar
+        options={{
+          indexAxis: "y",
+          responsive: true,
+          plugins: {
+            tooltip: {
+              callbacks: {
+                label: (ctx) => {
+                  const ms = ctx.raw as number;
+                  const time = msToTime(ms);
+                  return `${time} (${ms.toLocaleString()} ms)`;
+                },
+              },
+            },
+          },
+        }}
+        data={{
+          datasets: [
+            {
+              data: chartData.dataset,
+              label: `listened per decade in ms`,
             },
           ],
           labels: chartData.labels,

@@ -1,3 +1,4 @@
+import type { ListenedPerDecadeChart } from "./chartTypes/listenedPerDecade";
 import type { TopListenedChart } from "./chartTypes/topListened";
 import type { YearsListenedChart } from "./chartTypes/yearsListened";
 
@@ -9,6 +10,7 @@ type GenericStatsChart<T, I> = {
 export enum StatsChartType {
   TOP_LISTENED = "top_listened",
   YEARS_LISTENED = "years_listened",
+  LISTENED_PER_DECADE = "listened_per_decade",
 }
 
 export type TopListenedStatsChart = GenericStatsChart<
@@ -21,4 +23,12 @@ export type YearsListenedStatsChart = GenericStatsChart<
   StatsChartType.YEARS_LISTENED
 >;
 
-export type StatsChart = TopListenedStatsChart | YearsListenedStatsChart;
+export type ListenedPerDecadeStatsChart = GenericStatsChart<
+  ListenedPerDecadeChart,
+  StatsChartType.LISTENED_PER_DECADE
+>;
+
+export type StatsChart =
+  | TopListenedStatsChart
+  | YearsListenedStatsChart
+  | ListenedPerDecadeStatsChart;
