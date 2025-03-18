@@ -10,10 +10,10 @@ import {
 
 enum QueryKeys {
   GetTopListened = "get_top_listened",
-  YearsListened = "years_listened",
-  ListenedPerDecade = "listened_per_decade",
-  GeneralOverview = "general_overview",
-  TrackCompletion = "track_completion",
+  GetYearsListened = "get_years_listened",
+  GetListenedPerDecade = "get_listened_per_decade",
+  GetGeneralOverview = "get_general_overview",
+  GetTrackCompletion = "get_track_completion",
 }
 
 export const useTopListened = () =>
@@ -27,7 +27,7 @@ export const useYearsListened = () =>
   useQuery({
     queryFn: () =>
       request<YearsListenedStatsChart>("/chart/years_listened", "GET"),
-    queryKey: [QueryKeys.YearsListened],
+    queryKey: [QueryKeys.GetYearsListened],
     retry: false,
   });
 
@@ -35,7 +35,7 @@ export const useListenedPerDecade = () =>
   useQuery({
     queryFn: () =>
       request<ListenedPerDecadeStatsChart>("/chart/listened_per_decade", "GET"),
-    queryKey: [QueryKeys.ListenedPerDecade],
+    queryKey: [QueryKeys.GetListenedPerDecade],
     retry: false,
   });
 
@@ -43,7 +43,7 @@ export const useGeneralOverview = () =>
   useQuery({
     queryFn: () =>
       request<GeneralOverviewStatsChart>("/chart/general_overview", "GET"),
-    queryKey: [QueryKeys.GeneralOverview],
+    queryKey: [QueryKeys.GetGeneralOverview],
     retry: false,
   });
 
@@ -51,6 +51,6 @@ export const useTrackCompletion = () =>
   useQuery({
     queryFn: () =>
       request<TrackCompletionStatsChart>("/chart/track_completion", "GET"),
-    queryKey: [QueryKeys.TrackCompletion],
+    queryKey: [QueryKeys.GetTrackCompletion],
     retry: false,
   });

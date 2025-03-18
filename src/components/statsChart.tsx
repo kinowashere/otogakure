@@ -266,7 +266,17 @@ export const TrackCompletionChart = ({ year }: TrackCompletionChartProps) => {
     <section className="flex flex-col space-y-1">
       <h2>percentage of track completion per listen</h2>
       <Bar
-        options={{ responsive: true }}
+        options={{
+          responsive: true,
+          scales: {
+            x: {
+              title: {
+                text: "% listened",
+                display: true,
+              },
+            },
+          },
+        }}
         data={{
           datasets: [
             {
