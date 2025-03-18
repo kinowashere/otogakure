@@ -8,6 +8,7 @@ import {
   GeneralOverview,
   ListenedPerDecadeChart,
   TopListenedChart,
+  TrackCompletionChart,
 } from "../components/statsChart";
 import { YearSelector } from "../components/yearSelector";
 
@@ -24,6 +25,7 @@ const Index = () => {
       <GeneralOverview year={year} />
       <TopListenedChart year={year} />
       <ListenedPerDecadeChart year={year} />
+      <TrackCompletionChart year={year} />
     </main>
   );
 };

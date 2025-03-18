@@ -3,15 +3,16 @@ import {
   useGeneralOverview,
   useListenedPerDecade,
   useTopListened,
+  useTrackCompletion,
 } from "../statsChart/client/api";
 import { useState } from "react";
 import type {
   GeneralOverviewStatsChart,
   ListenedPerDecadeStatsChart,
   TopListenedStatsChart,
+  TrackCompletionStatsChart,
 } from "../statsChart/statsChart";
 import { msToTime } from "../utils/msToTime";
-import type { GeneralOverviewChart } from "../statsChart/chartTypes/generalOverview";
 
 type TopListenedTab = "artist" | "album" | "track" | "genre";
 
@@ -222,6 +223,59 @@ export const GeneralOverview = ({ year }: GeneralOverviewProps) => {
       <GeneralOverviewBlock
         title="unique genres"
         text={chartData.unique_genres.toLocaleString()}
+      />
+    </section>
+  );
+};
+
+const processTrackCompletion = (
+  year: string,
+  data?: TrackCompletionStatsChart,
+) => {
+  switch (data) {
+    case undefined:
+      return null;
+    default:
+      const labels: string[] = [];
+      const dataset: number[] = [];
+      const yearData = data.data[year];
+      if (!yearData) {
+        return { labels, dataset };
+      }
+      Object.keys(yearData).forEach((decade) => {
+        labels.push(decade);
+        dataset.push(yearData[Number(decade)]);
+      });
+      return { labels, dataset };
+  }
+};
+
+type TrackCompletionChartProps = {
+  year: string;
+};
+
+export const TrackCompletionChart = ({ year }: TrackCompletionChartProps) => {
+  const { status, data } = useTrackCompletion();
+  const chartData = processTrackCompletion(year, data);
+
+  if (status == "loading" || !chartData) {
+    return <div>loading...</div>;
+  }
+
+  return (
+    <section className="flex flex-col space-y-1">
+      <h2>percentage of track completion per listen</h2>
+      <Bar
+        options={{ responsive: true }}
+        data={{
+          datasets: [
+            {
+              data: chartData.dataset,
+              label: `number of listened tracks completed %`,
+            },
+          ],
+          labels: chartData.labels,
+        }}
       />
     </section>
   );

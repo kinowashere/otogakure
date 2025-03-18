@@ -4,6 +4,7 @@ import {
   type GeneralOverviewStatsChart,
   type ListenedPerDecadeStatsChart,
   type TopListenedStatsChart,
+  type TrackCompletionStatsChart,
   type YearsListenedStatsChart,
 } from "../statsChart";
 
@@ -12,6 +13,7 @@ enum QueryKeys {
   YearsListened = "years_listened",
   ListenedPerDecade = "listened_per_decade",
   GeneralOverview = "general_overview",
+  TrackCompletion = "track_completion",
 }
 
 export const useTopListened = () =>
@@ -42,5 +44,13 @@ export const useGeneralOverview = () =>
     queryFn: () =>
       request<GeneralOverviewStatsChart>("/chart/general_overview", "GET"),
     queryKey: [QueryKeys.GeneralOverview],
+    retry: false,
+  });
+
+export const useTrackCompletion = () =>
+  useQuery({
+    queryFn: () =>
+      request<TrackCompletionStatsChart>("/chart/track_completion", "GET"),
+    queryKey: [QueryKeys.TrackCompletion],
     retry: false,
   });

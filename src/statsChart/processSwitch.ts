@@ -1,6 +1,7 @@
 import { processGeneralOverview } from "./chartTypes/generalOverview";
 import { processListenedPerDecade } from "./chartTypes/listenedPerDecade";
 import { processTopListened } from "./chartTypes/topListened";
+import { processTrackCompletion } from "./chartTypes/trackCompletion";
 import { processYearsListened } from "./chartTypes/yearsListened";
 import { StatsChartType } from "./statsChart";
 
@@ -17,6 +18,9 @@ export const processSwitch = async (type: StatsChartType) => {
       break;
     case StatsChartType.GENERAL_OVERVIEW:
       await processGeneralOverview();
+      break;
+    case StatsChartType.TRACK_COMPLETION:
+      await processTrackCompletion();
       break;
   }
 };
