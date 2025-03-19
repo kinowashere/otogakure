@@ -1,4 +1,5 @@
 import type { GeneralOverviewChart } from "./chartTypes/generalOverview";
+import type { HeatmapPerDayChart } from "./chartTypes/heatmapPerDay";
 import type { ListenedPerDecadeChart } from "./chartTypes/listenedPerDecade";
 import type { TopListenedChart } from "./chartTypes/topListened";
 import type { TrackCompletionChart } from "./chartTypes/trackCompletion";
@@ -15,6 +16,7 @@ export enum StatsChartType {
   LISTENED_PER_DECADE = "listened_per_decade",
   GENERAL_OVERVIEW = "general_overview",
   TRACK_COMPLETION = "track_completion",
+  HEATMAP_PER_DAY = "heatmap_per_day",
 }
 
 export type TopListenedStatsChart = GenericStatsChart<
@@ -42,9 +44,15 @@ export type TrackCompletionStatsChart = GenericStatsChart<
   StatsChartType.TRACK_COMPLETION
 >;
 
+export type HeatmapPerDayStatsChart = GenericStatsChart<
+  HeatmapPerDayChart,
+  StatsChartType.HEATMAP_PER_DAY
+>;
+
 export type StatsChart =
   | TopListenedStatsChart
   | YearsListenedStatsChart
   | ListenedPerDecadeStatsChart
   | GeneralOverviewStatsChart
-  | TrackCompletionStatsChart;
+  | TrackCompletionStatsChart
+  | HeatmapPerDayStatsChart;

@@ -1,6 +1,7 @@
 import { Bar } from "react-chartjs-2";
 import {
   useGeneralOverview,
+  useHeatmapPerDay,
   useListenedPerDecade,
   useTopListened,
   useTrackCompletion,
@@ -8,11 +9,13 @@ import {
 import { useState } from "react";
 import type {
   GeneralOverviewStatsChart,
+  HeatmapPerDayStatsChart,
   ListenedPerDecadeStatsChart,
   TopListenedStatsChart,
   TrackCompletionStatsChart,
 } from "../statsChart/statsChart";
 import { msToTime } from "../utils/msToTime";
+import { WeekHeatmap } from "./weekHeatmap";
 
 type TopListenedTab = "artist" | "album" | "track" | "genre";
 
@@ -286,6 +289,51 @@ export const TrackCompletionChart = ({ year }: TrackCompletionChartProps) => {
           ],
           labels: chartData.labels,
         }}
+      />
+    </section>
+  );
+};
+
+const processHeatmapPerDay = (
+  year: string,
+  data?: HeatmapPerDayStatsChart,
+): Record<string, number> | null => {
+  if (!data) {
+    return null;
+  }
+  const processed: Record<string, number> = {};
+  Object.keys(data.data).forEach((key) => {
+    const curr = data.data[key];
+    if (curr.year === Number(year)) {
+      processed[key] = curr.percentage;
+    }
+  });
+  return processed;
+};
+
+type HeatmapPerDayChartProps = {
+  year: string;
+};
+
+export const HeatmapPerDayChart = ({ year }: HeatmapPerDayChartProps) => {
+  const { status, data } = useHeatmapPerDay();
+  const chartData = processHeatmapPerDay(year, data);
+
+  if (year === "all") {
+    return null;
+  }
+
+  if (status == "loading" || !chartData) {
+    return <div>loading...</div>;
+  }
+
+  return (
+    <section className="flex flex-col space-y-1">
+      <h2>heatmap listened per day in the year</h2>
+      <WeekHeatmap
+        from={`${year}-01-01`}
+        to={`${year}-12-31`}
+        data={chartData}
       />
     </section>
   );

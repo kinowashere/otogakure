@@ -6,6 +6,7 @@ import {
 import { H1 } from "../components/text";
 import {
   GeneralOverview,
+  HeatmapPerDayChart,
   ListenedPerDecadeChart,
   TopListenedChart,
   TrackCompletionChart,
@@ -22,6 +23,7 @@ const Index = () => {
     <main className="flex flex-col space-y-3">
       <H1>general</H1>
       <YearSelector onSelect={onSelect} value={year} />
+      <HeatmapPerDayChart year={year} />
       <GeneralOverview year={year} />
       <TopListenedChart year={year} />
       <ListenedPerDecadeChart year={year} />

@@ -1,4 +1,5 @@
 import { processGeneralOverview } from "./chartTypes/generalOverview";
+import { processHeatmapPerDay } from "./chartTypes/heatmapPerDay";
 import { processListenedPerDecade } from "./chartTypes/listenedPerDecade";
 import { processTopListened } from "./chartTypes/topListened";
 import { processTrackCompletion } from "./chartTypes/trackCompletion";
@@ -21,6 +22,9 @@ export const processSwitch = async (type: StatsChartType) => {
       break;
     case StatsChartType.TRACK_COMPLETION:
       await processTrackCompletion();
+      break;
+    case StatsChartType.HEATMAP_PER_DAY:
+      await processHeatmapPerDay();
       break;
   }
 };

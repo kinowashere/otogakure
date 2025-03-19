@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { request } from "./request";
 import {
   type GeneralOverviewStatsChart,
+  type HeatmapPerDayStatsChart,
   type ListenedPerDecadeStatsChart,
   type TopListenedStatsChart,
   type TrackCompletionStatsChart,
@@ -14,6 +15,7 @@ enum QueryKeys {
   GetListenedPerDecade = "get_listened_per_decade",
   GetGeneralOverview = "get_general_overview",
   GetTrackCompletion = "get_track_completion",
+  GetHeatmapPerDay = "get_heatmap_per_day",
 }
 
 export const useTopListened = () =>
@@ -52,5 +54,13 @@ export const useTrackCompletion = () =>
     queryFn: () =>
       request<TrackCompletionStatsChart>("/chart/track_completion", "GET"),
     queryKey: [QueryKeys.GetTrackCompletion],
+    retry: false,
+  });
+
+export const useHeatmapPerDay = () =>
+  useQuery({
+    queryFn: () =>
+      request<HeatmapPerDayStatsChart>("/chart/heatmap_per_day", "GET"),
+    queryKey: [QueryKeys.GetHeatmapPerDay],
     retry: false,
   });

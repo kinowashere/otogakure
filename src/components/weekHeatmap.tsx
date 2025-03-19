@@ -123,6 +123,7 @@ export const WeekHeatmap = ({ from, to, data }: WeekHeatmapProps) => {
                     className={`w-2.5 h-2.5 ${bg}`}
                     style={{ opacity }}
                     key={isoDate}
+                    title={`${isoDate} - ${Math.floor(percentage * 100)}%`}
                   ></div>
                 );
               })}
