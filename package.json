@@ -1,34 +1,26 @@
 {
   "name": "otogakure",
-  "module": "index.ts",
-  "type": "module",
   "private": true,
+  "version": "0.0.0",
+  "type": "module",
   "scripts": {
     "dev": "vite",
     "format:check": "prettier . --check",
-    "format:write": "prettier . --write"
-  },
-  "devDependencies": {
-    "@tailwindcss/vite": "4.0.13",
-    "@tanstack/react-router-devtools": "1.114.21",
-    "@tanstack/router-plugin": "1.114.17",
-    "@types/bun": "latest",
-    "@types/react": "19.0.10",
-    "@types/react-dom": "19.0.4",
-    "@vitejs/plugin-react": "4.3.4",
-    "prettier": "3.5.3",
-    "tailwindcss": "4.0.13",
-    "vite": "6.2.1"
-  },
-  "peerDependencies": {
-    "typescript": "^5"
+    "format:write": "prettier . --write",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview"
   },
   "dependencies": {
-    "@tanstack/react-query": "4",
-    "@tanstack/react-router": "1.114.17",
-    "chart.js": "4.4.8",
-    "react": "19.0.0",
-    "react-chartjs-2": "5.3.0",
-    "react-dom": "19.0.0"
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.10",
+    "@types/react-dom": "^19.0.4",
+    "@vitejs/plugin-react": "^4.3.4",
+    "globals": "^15.15.0",
+    "prettier": "3.5.3",
+    "typescript": "~5.7.2",
+    "vite": "^6.2.0"
   }
 }
