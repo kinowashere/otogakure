@@ -6,20 +6,13 @@
   "scripts": {
     "dev": "vite",
     "format:check": "prettier . --check",
-    "format:write": "prettier . --write",
-    "import_local_tracks": "bun /src/scripts/importLocalTracks.ts",
-    "import_spotify_data": "bun /src/scripts/importSpotifyData.ts",
-    "process_listened_tracks": "bun /src/scripts/processListenedTracks.ts",
-    "process_charts": "bun /src/scripts/processCharts.ts",
-    "server:watch": "bun --watch /src/scripts/server.ts",
-    "setup": "bun /src/scripts/setup.ts"
+    "format:write": "prettier . --write"
   },
   "devDependencies": {
     "@tailwindcss/vite": "4.0.13",
     "@tanstack/react-router-devtools": "1.114.21",
     "@tanstack/router-plugin": "1.114.17",
     "@types/bun": "latest",
-    "@types/lodash": "4.17.16",
     "@types/react": "19.0.10",
     "@types/react-dom": "19.0.4",
     "@vitejs/plugin-react": "4.3.4",
@@ -34,8 +27,6 @@
     "@tanstack/react-query": "4",
     "@tanstack/react-router": "1.114.17",
     "chart.js": "4.4.8",
-    "lodash": "4.17.21",
-    "mongodb": "6.14.2",
     "react": "19.0.0",
     "react-chartjs-2": "5.3.0",
     "react-dom": "19.0.0"

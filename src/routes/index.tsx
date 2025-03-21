@@ -1,7 +1,9 @@
-import { createFileRoute, redirect } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
+
+const Index = () => {
+  return <h1>Hello, world!</h1>;
+};
 
 export const Route = createFileRoute("/")({
-  loader: () => {
-    throw redirect({ to: "/general/$year", params: { year: "all" } });
-  },
+  component: Index,
 });
