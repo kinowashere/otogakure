@@ -23,7 +23,6 @@ report.[0-9]_.[0-9]_.[0-9]_.[0-9]_.json
 .env.local
 
 # caches
-.eslintcache
 .cache
 *.tsbuildinfo
 
@@ -35,7 +34,3 @@ report.[0-9]_.[0-9]_.[0-9]_.[0-9]_.json
 
 # Code
 .vscode
-
-# Spotify Data
-spotify_data/*
-!spotify_data/placeholder

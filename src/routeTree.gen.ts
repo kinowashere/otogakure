@@ -12,19 +12,12 @@
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as IndexImport } from './routes/index'
-import { Route as GeneralYearImport } from './routes/general.$year.'
 
 // Create/Update Routes
 
 const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const GeneralYearRoute = GeneralYearImport.update({
-  id: '/general/$year/',
-  path: '/general/$year/',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -39,13 +32,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
-    '/general/$year/': {
-      id: '/general/$year/'
-      path: '/general/$year'
-      fullPath: '/general/$year'
-      preLoaderRoute: typeof GeneralYearImport
-      parentRoute: typeof rootRoute
-    }
   }
 }
 
@@ -53,37 +39,32 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/general/$year': typeof GeneralYearRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/general/$year': typeof GeneralYearRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
-  '/general/$year/': typeof GeneralYearRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/general/$year'
+  fullPaths: '/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/general/$year'
-  id: '__root__' | '/' | '/general/$year/'
+  to: '/'
+  id: '__root__' | '/'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  GeneralYearRoute: typeof GeneralYearRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  GeneralYearRoute: GeneralYearRoute,
 }
 
 export const routeTree = rootRoute
@@ -96,15 +77,11 @@ export const routeTree = rootRoute
     "__root__": {
       "filePath": "__root.tsx",
       "children": [
-        "/",
-        "/general/$year/"
+        "/"
       ]
     },
     "/": {
       "filePath": "index.tsx"
-    },
-    "/general/$year/": {
-      "filePath": "general.$year..tsx"
     }
   }
 }
