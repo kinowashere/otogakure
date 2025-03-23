@@ -3,10 +3,10 @@ import { LoginScreen } from "../auth/loginScreen";
 
 const Index = () => {
   return (
-    <>
-      <h1 className="text-amber-50 italic">Welcome!</h1>
+    <section className="flex flex-col space-y-10` mt-10">
+      <h1 className="italic">welcome to otogakure!</h1>
       <LoginScreen />
-    </>
+    </section>
   );
 };
 
