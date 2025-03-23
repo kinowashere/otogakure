@@ -7,9 +7,7 @@ gangster-driven development
 ## setup
 
 - setup bun with `asdf`.
-- have a mongo instance running.
-- copy `.env.example` to `.env` and setup your own env vars.
-- copy your spotify tracks (_Streaming History Audio_) into `./spotify_data/`
+- `bun dev`
 
 ## scripts
 
