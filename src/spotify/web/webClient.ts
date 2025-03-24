@@ -1,9 +1,9 @@
-import { sleep } from "bun";
-import { getAuthTokenSafe } from "../auth/authTokenUpdater";
+import { sleep } from "../../utils";
 
 type WebClientProps = {
   method: "GET" | "POST";
   path: string;
+  accessToken: string;
   body?: any;
   query?: URLSearchParams;
 };
@@ -33,7 +33,9 @@ export const webClient = async (props: WebClientProps) => {
     switch (result.status) {
       case 0:
         retries += 1;
-        console.log(`rate limit reached. retrying after: ${result.retryAfter}`);
+        console.info(
+          `rate limit / status 500 reached. retrying after: ${result.retryAfter}`,
+        );
         await sleep(result.retryAfter);
         break;
       default:
@@ -42,14 +44,21 @@ export const webClient = async (props: WebClientProps) => {
   }
 };
 
-const request = async ({ method, path, body, query }: WebClientProps) => {
+const request = async ({
+  method,
+  path,
+  body,
+  query,
+  accessToken,
+}: WebClientProps) => {
   const res = await fetch(buildUri(path, query), {
     method,
     body: buildBody(body),
-    headers: buildHeaders(),
+    headers: buildHeaders(accessToken),
   });
   switch (res.status) {
     case 429:
+    case 500:
       const rateLimit: RateLimitResponse = {
         status: 0,
         retryAfter: getRetryAfterInMs(res),
@@ -77,8 +86,7 @@ const getRetryAfterInMs = (res: Response) => {
   }
 };
 
-const buildHeaders = () => {
-  const { accessToken } = getAuthTokenSafe();
+const buildHeaders = (accessToken: string) => {
   return { Authorization: `Bearer ${accessToken}` };
 };
 

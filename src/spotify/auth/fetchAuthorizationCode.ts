@@ -1,5 +1,6 @@
 import { generateRedirectUri } from "./authLink";
 import { authClient } from "./authClient";
+import { WithAuthKeys } from "./types";
 
 export type AuthorizationCode = {
   access_token: string;
@@ -8,11 +9,23 @@ export type AuthorizationCode = {
   refresh_token: string;
 };
 
-export const fetchAuthorizationCode = async (code: string) => {
+type FetchAuthorizationCodeProps = WithAuthKeys<{
+  code: string;
+}>;
+
+export const fetchAuthorizationCode = async ({
+  code,
+  spotifyClientId,
+  spotifyClientSecret,
+}: FetchAuthorizationCodeProps) => {
   const res = await authClient({
-    code,
-    grant_type: "authorization_code",
-    redirect_uri: generateRedirectUri(),
+    body: {
+      code,
+      grant_type: "authorization_code",
+      redirect_uri: generateRedirectUri(),
+    },
+    spotifyClientId,
+    spotifyClientSecret,
   });
   const body = await res.json();
   if (res.status !== 200 || !body) {

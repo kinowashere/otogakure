@@ -11,10 +11,18 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as AppImport } from './routes/app'
 import { Route as IndexImport } from './routes/index'
-import { Route as GeneralYearImport } from './routes/general.$year.'
+import { Route as AuthCallbackImport } from './routes/auth/callback'
+import { Route as AppSettingsImport } from './routes/app/settings'
 
 // Create/Update Routes
+
+const AppRoute = AppImport.update({
+  id: '/app',
+  path: '/app',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const IndexRoute = IndexImport.update({
   id: '/',
@@ -22,10 +30,16 @@ const IndexRoute = IndexImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const GeneralYearRoute = GeneralYearImport.update({
-  id: '/general/$year/',
-  path: '/general/$year/',
+const AuthCallbackRoute = AuthCallbackImport.update({
+  id: '/auth/callback',
+  path: '/auth/callback',
   getParentRoute: () => rootRoute,
+} as any)
+
+const AppSettingsRoute = AppSettingsImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => AppRoute,
 } as any)
 
 // Populate the FileRoutesByPath interface
@@ -39,11 +53,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
-    '/general/$year/': {
-      id: '/general/$year/'
-      path: '/general/$year'
-      fullPath: '/general/$year'
-      preLoaderRoute: typeof GeneralYearImport
+    '/app': {
+      id: '/app'
+      path: '/app'
+      fullPath: '/app'
+      preLoaderRoute: typeof AppImport
+      parentRoute: typeof rootRoute
+    }
+    '/app/settings': {
+      id: '/app/settings'
+      path: '/settings'
+      fullPath: '/app/settings'
+      preLoaderRoute: typeof AppSettingsImport
+      parentRoute: typeof AppImport
+    }
+    '/auth/callback': {
+      id: '/auth/callback'
+      path: '/auth/callback'
+      fullPath: '/auth/callback'
+      preLoaderRoute: typeof AuthCallbackImport
       parentRoute: typeof rootRoute
     }
   }
@@ -51,39 +79,57 @@ declare module '@tanstack/react-router' {
 
 // Create and export the route tree
 
+interface AppRouteChildren {
+  AppSettingsRoute: typeof AppSettingsRoute
+}
+
+const AppRouteChildren: AppRouteChildren = {
+  AppSettingsRoute: AppSettingsRoute,
+}
+
+const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
+
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/general/$year': typeof GeneralYearRoute
+  '/app': typeof AppRouteWithChildren
+  '/app/settings': typeof AppSettingsRoute
+  '/auth/callback': typeof AuthCallbackRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/general/$year': typeof GeneralYearRoute
+  '/app': typeof AppRouteWithChildren
+  '/app/settings': typeof AppSettingsRoute
+  '/auth/callback': typeof AuthCallbackRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
-  '/general/$year/': typeof GeneralYearRoute
+  '/app': typeof AppRouteWithChildren
+  '/app/settings': typeof AppSettingsRoute
+  '/auth/callback': typeof AuthCallbackRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/general/$year'
+  fullPaths: '/' | '/app' | '/app/settings' | '/auth/callback'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/general/$year'
-  id: '__root__' | '/' | '/general/$year/'
+  to: '/' | '/app' | '/app/settings' | '/auth/callback'
+  id: '__root__' | '/' | '/app' | '/app/settings' | '/auth/callback'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  GeneralYearRoute: typeof GeneralYearRoute
+  AppRoute: typeof AppRouteWithChildren
+  AuthCallbackRoute: typeof AuthCallbackRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  GeneralYearRoute: GeneralYearRoute,
+  AppRoute: AppRouteWithChildren,
+  AuthCallbackRoute: AuthCallbackRoute,
 }
 
 export const routeTree = rootRoute
@@ -97,14 +143,25 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/general/$year/"
+        "/app",
+        "/auth/callback"
       ]
     },
     "/": {
       "filePath": "index.tsx"
     },
-    "/general/$year/": {
-      "filePath": "general.$year..tsx"
+    "/app": {
+      "filePath": "app.tsx",
+      "children": [
+        "/app/settings"
+      ]
+    },
+    "/app/settings": {
+      "filePath": "app/settings.tsx",
+      "parent": "/app"
+    },
+    "/auth/callback": {
+      "filePath": "auth/callback.tsx"
     }
   }
 }

@@ -1,4 +1,5 @@
 import { authClient } from "./authClient";
+import { WithAuthKeys } from "./types";
 
 export type RefreshToken = {
   access_token: string;
@@ -7,10 +8,20 @@ export type RefreshToken = {
   refresh_token?: string | null;
 };
 
-export const fetchRefreshToken = async (refreshToken: string) => {
+type FetchRefreshTokenProps = WithAuthKeys<{ refreshToken: string }>;
+
+export const fetchRefreshToken = async ({
+  refreshToken,
+  spotifyClientId,
+  spotifyClientSecret,
+}: FetchRefreshTokenProps) => {
   const res = await authClient({
-    refresh_token: refreshToken,
-    grant_type: "refresh_token",
+    body: {
+      refresh_token: refreshToken,
+      grant_type: "refresh_token",
+    },
+    spotifyClientId,
+    spotifyClientSecret,
   });
   const body = await res.json();
   if (res.status !== 200 || !body) {
