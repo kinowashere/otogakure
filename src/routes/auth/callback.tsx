@@ -7,7 +7,7 @@ const RouteComponent = () => {
   const navigate = useNavigate();
   useEffect(() => {
     if (isAuthenticated) {
-      navigate({ to: "/" });
+      navigate({ to: "/app/settings" });
     }
   }, [isAuthenticated]);
   return null;

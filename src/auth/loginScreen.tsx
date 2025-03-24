@@ -2,6 +2,7 @@ import { ChangeEvent, FormEvent, HTMLInputTypeAttribute } from "react";
 import { AuthKeys } from "../spotify/auth/types";
 import { useAuth } from "./context";
 import { useForm } from "@tanstack/react-form";
+import { Link } from "@tanstack/react-router";
 
 type InputProps = {
   labelText: string;
@@ -17,7 +18,7 @@ const Input = ({ labelText, value, onChange, type, errors }: InputProps) => {
       <input
         value={value}
         type={type}
-        className="bg-zinc-200 text-zinc-900"
+        className="bg-zinc-50 text-zinc-900"
         onChange={onChange}
       />
       {errors && (
@@ -135,9 +136,17 @@ const SpotifyLoginButton = () => {
 
 export const LoginScreen = () => {
   const { spotifyKeys, authToken, currentUserProfile } = useAuth();
+  const displayText = currentUserProfile?.display_name
+    ? `go to the app as ${currentUserProfile?.display_name}`
+    : "go to the app";
   if (currentUserProfile) {
     return (
-      <p>Hello, {currentUserProfile.display_name || currentUserProfile.uri}</p>
+      <Link
+        to="/app/settings"
+        className="bg-green-600 text-zinc-200 px-2 py-1 rounded"
+      >
+        {displayText}
+      </Link>
     );
   }
   if (!spotifyKeys) {

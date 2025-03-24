@@ -1,8 +1,12 @@
 import { createContext, ReactNode, useContext } from "react";
 import { useSpotifyAuth } from "../spotify/auth/useSpotifyAuth";
 import { AuthKeys, AuthToken } from "../spotify/auth/types";
-import { useGetCurrentUserProfile } from "../spotify/web/api/users/getCurrentUserProfile";
+import {
+  GET_CURRENT_USER_PROFILE_QUERY_KEY,
+  useGetCurrentUserProfile,
+} from "../spotify/web/api/users/getCurrentUserProfile";
 import { CurrentUserProfile } from "../spotify/web/api/api";
+import { useQueryClient } from "@tanstack/react-query";
 
 export type AuthContext = {
   isAuthenticated: boolean;
@@ -12,17 +16,33 @@ export type AuthContext = {
   fetchAuthToken: (code: string) => void;
   authLink: string | null;
   currentUserProfile: CurrentUserProfile | null;
+  logout: () => void;
 };
 
 const AuthContext = createContext<AuthContext | null>(null);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const { authToken, fetchAuthToken, spotifyKeys, storeKeys, authLink } =
-    useSpotifyAuth();
+  const {
+    authToken,
+    fetchAuthToken,
+    spotifyKeys,
+    storeKeys,
+    authLink,
+    logout: logoutSpotify,
+  } = useSpotifyAuth();
   const accessToken = authToken?.accessToken || null;
   const { data } = useGetCurrentUserProfile(accessToken);
+  const queryClient = useQueryClient();
+
   const isAuthenticated = !!data?.data.uri;
   const currentUserProfile = data?.data || null;
+  const logout = () => {
+    logoutSpotify();
+    queryClient.invalidateQueries({
+      queryKey: [GET_CURRENT_USER_PROFILE_QUERY_KEY],
+    });
+    window.location.assign(window.location.origin);
+  };
   return (
     <AuthContext
       value={{
@@ -33,6 +53,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         fetchAuthToken,
         authLink,
         currentUserProfile,
+        logout,
       }}
     >
       {children}

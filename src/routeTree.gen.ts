@@ -11,10 +11,18 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as AppImport } from './routes/app'
 import { Route as IndexImport } from './routes/index'
 import { Route as AuthCallbackImport } from './routes/auth/callback'
+import { Route as AppSettingsImport } from './routes/app/settings'
 
 // Create/Update Routes
+
+const AppRoute = AppImport.update({
+  id: '/app',
+  path: '/app',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const IndexRoute = IndexImport.update({
   id: '/',
@@ -28,6 +36,12 @@ const AuthCallbackRoute = AuthCallbackImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const AppSettingsRoute = AppSettingsImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => AppRoute,
+} as any)
+
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
@@ -38,6 +52,20 @@ declare module '@tanstack/react-router' {
       fullPath: '/'
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
+    }
+    '/app': {
+      id: '/app'
+      path: '/app'
+      fullPath: '/app'
+      preLoaderRoute: typeof AppImport
+      parentRoute: typeof rootRoute
+    }
+    '/app/settings': {
+      id: '/app/settings'
+      path: '/settings'
+      fullPath: '/app/settings'
+      preLoaderRoute: typeof AppSettingsImport
+      parentRoute: typeof AppImport
     }
     '/auth/callback': {
       id: '/auth/callback'
@@ -51,38 +79,56 @@ declare module '@tanstack/react-router' {
 
 // Create and export the route tree
 
+interface AppRouteChildren {
+  AppSettingsRoute: typeof AppSettingsRoute
+}
+
+const AppRouteChildren: AppRouteChildren = {
+  AppSettingsRoute: AppSettingsRoute,
+}
+
+const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
+
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/app': typeof AppRouteWithChildren
+  '/app/settings': typeof AppSettingsRoute
   '/auth/callback': typeof AuthCallbackRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/app': typeof AppRouteWithChildren
+  '/app/settings': typeof AppSettingsRoute
   '/auth/callback': typeof AuthCallbackRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
+  '/app': typeof AppRouteWithChildren
+  '/app/settings': typeof AppSettingsRoute
   '/auth/callback': typeof AuthCallbackRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth/callback'
+  fullPaths: '/' | '/app' | '/app/settings' | '/auth/callback'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth/callback'
-  id: '__root__' | '/' | '/auth/callback'
+  to: '/' | '/app' | '/app/settings' | '/auth/callback'
+  id: '__root__' | '/' | '/app' | '/app/settings' | '/auth/callback'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AppRoute: typeof AppRouteWithChildren
   AuthCallbackRoute: typeof AuthCallbackRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AppRoute: AppRouteWithChildren,
   AuthCallbackRoute: AuthCallbackRoute,
 }
 
@@ -97,11 +143,22 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
+        "/app",
         "/auth/callback"
       ]
     },
     "/": {
       "filePath": "index.tsx"
+    },
+    "/app": {
+      "filePath": "app.tsx",
+      "children": [
+        "/app/settings"
+      ]
+    },
+    "/app/settings": {
+      "filePath": "app/settings.tsx",
+      "parent": "/app"
     },
     "/auth/callback": {
       "filePath": "auth/callback.tsx"

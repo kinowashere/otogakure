@@ -25,6 +25,10 @@ gangster-driven development
 
 - use `uri` fields for anything. the `id` field is a lie. don't trust me? check this `spotify:track:2E7W1X4maFFcjHrVrFA7Vs` and this `spotify:track:5zsln7hQof1oQ16eRwiB7s`. check it's id. bomboclaaaaaat
 
+## thx
+
+- heroicons -> https://github.com/tailwindlabs/heroicons
+
 ```
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣀⣀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣤⣶⣿⣿⣿⣿⣿⣿⣿⣿⣶⣦⣄⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀

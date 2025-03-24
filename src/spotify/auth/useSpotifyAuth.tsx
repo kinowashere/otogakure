@@ -171,11 +171,17 @@ export const useSpotifyAuth = () => {
     });
   };
 
+  const logout = () => {
+    setAndStoreAuthToken(null);
+    setAndStoreSpotifyKeys(null);
+  };
+
   return {
     authToken,
     fetchAuthToken,
     spotifyKeys,
     storeKeys: setAndStoreSpotifyKeys,
     authLink,
+    logout,
   };
 };
